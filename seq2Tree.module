@@ -1,0 +1,47 @@
+<?php
+
+/* Implementation of Hook_Menu */
+
+function seq2Tree_menu() {
+  $items = array();
+
+    $items['seq2Tree'] = array(
+    'title' => 'Seq2Tree Web Services',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('seq2Tree_form'),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/seq2Tree.form.inc',
+  );
+  
+  
+  $items['seq2Tree/report'] = array(
+    'title' => 'web_services1',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('seq2Tree_result_form'),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/seq2Tree.report.form.inc',
+  );
+  
+   // BLAST Admin
+  $items['admin/seq2Tree/setting'] = array(
+    'title' => 'Gene Family Consensus Setting Interface',
+    'description' => 'Provides an interface allowing users to execute BLASTs on Gene Family Consensus',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('seq2Tree_admin_form'),
+    'access arguments' => array('access content'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'includes/seq2Tree.admin.form.inc',
+  );
+  
+  return $items;
+}
+
+/* Implementation of Hook_Help */
+
+function seq2Tree_help($path, $arg) {
+   if ($path == 'admin/help#seq2Tree') {
+      return '' . t("This module is used to get Gene Family Consensus BLAST output") . '';
+  }
+} 

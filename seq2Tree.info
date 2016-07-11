@@ -1,0 +1,6 @@
+name = seq2Tree
+project = Sequence To Tree services
+description = Provides a user interface to allow user to use BLAST REST APIs
+package = Services
+core = 7.x
+configure = admin/seq2Tree/setting
