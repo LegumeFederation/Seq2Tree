@@ -26,8 +26,8 @@ function seq2Tree_menu() {
   
    // BLAST Admin
   $items['admin/seq2Tree/setting'] = array(
-    'title' => 'Gene Family Consensus Setting Interface',
-    'description' => 'Provides an interface allowing users to execute BLASTs on Gene Family Consensus',
+    'title' => 'BLAST Web Services Setting Interface',
+    'description' => 'Provides an interface allowing users to execute BLASTs',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('seq2Tree_admin_form'),
     'access arguments' => array('access content'),
