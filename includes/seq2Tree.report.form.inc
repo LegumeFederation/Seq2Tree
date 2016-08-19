@@ -89,8 +89,7 @@ fclose($handle);
 */
 
 
-$endpoint1 = 'http://localhost:8080/restapi';
+return variable_get('WebserviceDemo_endpoint').'/'.$resource_path;  
 
-return $endpoint1.'/'.$resource_path;  
 } 
 ?>
