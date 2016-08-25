@@ -13,7 +13,7 @@ function seq2Tree_admin_form($form, $form_state) {
 
 	$form['general']['database_option'] = array(
 	'#type' => 'radios',
-	'#title' => t('Select Blast Program Database Type'),
+	'#title' => t('Select BLAST Program Database Type'),
 	'#default_value' => variable_get('WebserviceDemo_blast_program','protein'),
 	'#options' => array('nucleotide' => t('Nucleotide'),'protein' => t('Protein')),
 	 '#ajax' => array(
@@ -28,8 +28,8 @@ function seq2Tree_admin_form($form, $form_state) {
 
   $form['general']['database_type']= array(
     '#type' => 'select',
-    '#title' => t('Enter the database type which matches with Blast program'),
-    '#description' => t('You can define the Blast program Type'),
+    '#title' => t('Enter the BLAST database for gene families'),
+    '#description' => t('You can define the BLAST program Type'),
     '#options' => $val,
     '#default_value' => variable_get('WebserviceDemo_database_type'),
     '#validated' => TRUE,
@@ -42,7 +42,7 @@ function seq2Tree_admin_form($form, $form_state) {
  $form['general']['Word_size']= array(
     '#type' => 'select',
     '#title' => t('Enter the Default Word Size'),
-    '#description' => t('You can define the word size here which is used by Gene Family consensus for Blast'),
+    '#description' => t('You can define the word size here which is used by Gene Family consensus for BLAST'),
     '#options' => $word_val,
     '#default_value' => variable_get('WebserviceDemo_Word_size'),
     '#validated' => TRUE,
@@ -54,17 +54,17 @@ function seq2Tree_admin_form($form, $form_state) {
   $form['general']['Matrix_options']= array(
     '#type' => 'textfield',
     '#title' => t('Matrix_options'),
-    '#description' => t('You can define the Matrix_options here which is used by Gene Family consensus for Blast'),
+    '#description' => t('You can define the Matrix_options here which is used by Gene Family consensus for BLAST'),
     '#default_value' => variable_get('WebserviceDemo_Matrix_options', 'PAM30'),
     '#required' => TRUE
   );
   
     $form['general']['path'] = array(
   '#type' => 'textfield',
-  '#title' => t('Enter the path'),
-  '#description' => t('This directory path is used to store BLAST output, Rembember to give read and write permission to specified folder'),
-  '#default_value' => variable_get('blast_output_path'),
-  '#required' => TRUE
+  '#title' => t('Enter the path for temporary files'),
+  '#description' => t('This directory path is used to store BLAST output, Rembember to give read and write permission to specified folder otherwise files are stored in /drupal/files/'),
+  '#default_value' => variable_get('blast_output_path','/usr/local/www/drupal7/files/'),
+ // '#required' => TRUE
   );
   
   
