@@ -1,24 +1,32 @@
 <?php
+/** Created and developed By Prateek Gupta
+**
+**/
 
 $path = drupal_get_path('module', 'seq2Tree');
 require_once("$path/includes/seq2Tree.utilityfunction.inc");
 
 
+
+
 function seq2Tree_admin_form($form, $form_state) {
+
+$current_url = url(current_path(), array('absolute' => TRUE));
+$url_endpoint = explode ("/", $current_url);
+$e_point = $url_endpoint[0].'//'.$url_endpoint[2].'/restapi';
 
   $form['general'] = array(
     '#type' => 'fieldset',
     '#title' => 'General'
   );
 
-	$form['general']['database_option'] = array(
-	'#type' => 'radios',
-	'#title' => t('Select BLAST Program Database Type'),
-	'#default_value' => variable_get('WebserviceDemo_blast_program','protein'),
-	'#options' => array('nucleotide' => t('Nucleotide'),'protein' => t('Protein')),
-	 '#ajax' => array(
+  $form['general']['database_option'] = array(
+  '#type' => 'radios',
+  '#title' => t('Select BLAST Program Database Type'),
+  '#default_value' => variable_get('WebserviceDemo_blast_program','protein'),
+  '#options' => array('nucleotide' => t('Nucleotide'),'protein' => t('Protein')),
+   '#ajax' => array(
      'callback' => 'ajax_seq2Tree_setDatabase_callback',
-  //   'wrapper'  => 'refresh_data1',
      'method'   => 'replace',
      'effect'   => 'fade',
     ),
@@ -74,13 +82,12 @@ function seq2Tree_admin_form($form, $form_state) {
   );
   
   
-  
   $form['Web_Services']['endpoint'] = array(
   '#type' => 'textfield',
   '#title' => t('Enter the endpoint'),
-  '#description' => t('You can ignore if your $endpoint variable is set. Otherwise, enter the endpoint. For example, http://localhost/restapi'),
-  '#default_value' => variable_get('WebserviceDemo_endpoint', 'http://localhost/restapi'),
-  '#required' => TRUE
+  '#description' => t('You can ignore if your $endpoint variable is set. Otherwise, enter the endpoint. For example,'.$e_point),
+  '#default_value' => variable_get('WebserviceDemo_endpoint', $e_point),
+ // '#required' => TRUE
   );
   
   $form['Web_Services']['output_format'] = array(
@@ -169,7 +176,15 @@ KRSLEEGLKTTGEGLDWGVLFGFGPGLTIETVVLRSVAI';
  * Validate the Admin/Settings form.
  */
 function seq2Tree_admin_form_validate($form, &$form_state) {
-	
+
+$path = $form_state['values']['path'];
+$test = decoct(fileperms($path) & 0777);
+if($test == 0){
+ form_set_error('title', 'Folder path doesnot exist');
+}
+if($test != 777){
+ form_set_error('title', 'Error at Enter the path for temporary files : Please provide Permission to read and write to Folder');
+}
 }
 
 

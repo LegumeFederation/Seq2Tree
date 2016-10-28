@@ -1,6 +1,8 @@
 <?php
 
-/* Implementation of Hook_Menu */
+/** Created and developed By Prateek Gupta
+**
+**/
 
 function seq2Tree_menu() {
   $items = array();

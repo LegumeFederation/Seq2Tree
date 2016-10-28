@@ -1,11 +1,13 @@
 <?php
-
+/** Created and developed By Prateek Gupta
+**
+**/
 function _get_database_type($which){
 
 switch($which){
-	case 'protein':
-	return array(
-		 'All proteins'  =>    t('All proteins'),
+  case 'protein':
+  return array(
+     'All proteins'  =>    t('All proteins'),
          'Arachis duranensis - proteins' => t('Arachis duranensis - proteins'),
          'Arachis ipaensis - proteins' => t('Arachis ipaensis - proteins'),
           'Cajanus cajan - proteins' => t('Cajanus cajan - proteins'),
@@ -16,7 +18,7 @@ switch($which){
           'Medicago truncatula - proteins' => t('Medicago truncatula - proteins'),
           'Phaseolus vulgaris - proteins' => t('Phaseolus vulgaris - proteins')
           );
-	case 'nucleotide':
+  case 'nucleotide':
      return array(
             'All CDS' => t('All CDS'),
             'All genomes' => t('All genomes'),
@@ -41,27 +43,27 @@ switch($which){
 }
 
 function _get_maxtarget($which) {
-	switch ($which) {
-	  case 'protein':
-	  case 'nucleotide':
-			return array(
-				10 => t('10'),
-				50 => t('50'),
-				100 => t('100'),
-				250 => t('250'),
-				500 => t('500'),
-				1000 => t('1000'),
-				5000 => t('5000'),
-				10000 => t('10000'),
-				20000 => t('20000'),
-			);
-	}//switch
+  switch ($which) {
+    case 'protein':
+    case 'nucleotide':
+      return array(
+        10 => t('10'),
+        50 => t('50'),
+        100 => t('100'),
+        250 => t('250'),
+        500 => t('500'),
+        1000 => t('1000'),
+        5000 => t('5000'),
+        10000 => t('10000'),
+        20000 => t('20000'),
+      );
+  }//switch
 }
 
 function _get_match_mismatch_Scores($which) {
-	switch ($which) {
-	  case 'nucleotide':
-	return array (
+  switch ($which) {
+    case 'nucleotide':
+  return array (
             '1,-2' => t('1,-2'),
             '1,-3' => t('1,-3'),
             '1,-4' => t('1,-4'),
@@ -73,16 +75,16 @@ function _get_match_mismatch_Scores($which) {
 }
 
 function _word_size($which){
-	switch($which){
-	case 'protein':
-	return array(
-		3 => t('3'),
-		6 => t('6'),
-	
-	);
-	case 'nucleotide' :
-	return array(
-			7 => t('7'),
+  switch($which){
+  case 'protein':
+  return array(
+    3 => t('3'),
+    6 => t('6'),
+  
+  );
+  case 'nucleotide' :
+  return array(
+      7 => t('7'),
             11 => t('11'),
             15 => t('15'),
             16 => t('16'),
@@ -94,17 +96,17 @@ function _word_size($which){
             64 => t('64'),
             128 => t('128'),
             256 => t('256'),
-	);
+  );
 }
 
 
 }
 
 function _get_gap_costs($which) {
-	switch ($which) {
-	  case 'nucleotide':
-	return array (
-			'Existence: 5 Extension: 2'	 => t('Existence: 5 Extension: 2'),
+  switch ($which) {
+    case 'nucleotide':
+  return array (
+      'Existence: 5 Extension: 2'  => t('Existence: 5 Extension: 2'),
             'Existence: 2 Extension: 2' => t('Existence: 2 Extension: 2'),
             'Existence: 1 Extension: 2' => t('Existence: 1 Extension: 2'),
             'Existence: 0 Extension: 2'=> t('Existence: 0 Extension: 2'),
@@ -112,13 +114,28 @@ function _get_gap_costs($which) {
             'Existence: 2 Extension: 1' => t('Existence: 2 Extension: 1'),
             'Existence: 1 Extension: 1' => t('Existence: 1 Extension: 1'),
 
-	     );
+       );
     }
 }
+    
+function validate_query_sequence($type, $sequence) {
 
-
-
-
-
-
-
+  if ($type == 'nucleotide') {
+    $fastaIdRegEx = '/^>.*(\\n|\\r)/';
+    $fastaSeqRegEx = '/[^acgntuACGNTU\n\r]/';
+    if ( preg_match($fastaSeqRegEx,$sequence) && !(preg_match($fastaIdRegEx,$sequence)) ) {
+      return TRUE;
+    } else {
+      return FALSE;
+    }
+  } elseif ($type == 'protein') {
+    $fastaIdRegEx = '/^>.*(\\n|\\r)/';
+    $fastaSeqRegEx = '/[^acgturykmswbdhvnxACGTURYKMSWBDHVNX\*\-\n\r]/';
+    if ( preg_match($fastaSeqRegEx,$sequence) && !(preg_match($fastaIdRegEx,$sequence)) ) {
+      return TRUE;
+    } else {
+      return FALSE;
+    }
+  }
+   return FALSE;
+}

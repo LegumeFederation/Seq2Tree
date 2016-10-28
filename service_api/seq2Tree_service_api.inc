@@ -1,5 +1,7 @@
 <?php
-
+/** Created and developed By Prateek Gupta
+**
+**/
 function makeRequest($resource_path,$endpoint, $http_method, $data = array()) {
    
     $data = http_build_query($data, '', '&');
@@ -16,8 +18,8 @@ function makeRequest($resource_path,$endpoint, $http_method, $data = array()) {
     );
     
   $response = drupal_http_request($endpoint . '/' . $resource_path, $options);
+  
   $data_response = $response->data;
- // drupal_set_message($data_response);
   return $data_response;
 }
    

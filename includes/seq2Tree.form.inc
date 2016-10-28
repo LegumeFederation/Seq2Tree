@@ -1,18 +1,21 @@
 <?php
 
+/** Created and developed By Prateek Gupta
+**
+**/
+
+
 $path = drupal_get_path('module', 'seq2Tree');
 require_once("$path/service_api/seq2Tree_service_api.inc");
 require_once("$path/includes/seq2Tree.utilityfunction.inc");
-
-
 
 function seq2Tree_form($form, &$form_state){
 
 
 $form['DB'] = array(
- 	'#title' => t('DataBase Options'),
- 	'#type' => 'fieldset',
- 	'#collapsible' => TRUE,
+  '#title' => t('DataBase Options'),
+  '#type' => 'fieldset',
+  '#collapsible' => TRUE,
     '#collapsed' => FALSE,
 );
 
@@ -40,8 +43,8 @@ $form['DB']['database_option'] = array(
 
 
 $form['genefamily'] = array(
- 	'#title' => t('Enter Query'),
- 	'#type' => 'fieldset',
+  '#title' => t('Enter Query'),
+  '#type' => 'fieldset',
 );
  
  $form['genefamily']['example_sequence'] = array(
@@ -70,9 +73,9 @@ $form['genefamily']['query'] = array(
 
 
 $form['advanced'] = array(
- 	'#title' => t('Advanced Options'),
- 	'#type' => 'fieldset',
- 	'#collapsible' => TRUE,
+  '#title' => t('Advanced Options'),
+  '#type' => 'fieldset',
+  '#collapsible' => TRUE,
     '#collapsed' => FALSE,
 );
 
@@ -98,9 +101,9 @@ $form['advanced']['eVal'] = array(
  {
   
   $form['Scoring_parameters'] = array(
- 	'#title' => t('Scoring_parameters'),
- 	'#type' => 'fieldset',
- 	'#collapsible' => TRUE,
+  '#title' => t('Scoring_parameters'),
+  '#type' => 'fieldset',
+  '#collapsible' => TRUE,
     '#collapsed' => TRUE,
 );
 
@@ -137,6 +140,12 @@ return $form;
 
 function seq2Tree_form_validate($form,&$form_state){
 
+  if($form_state['values']['query'] == ''){
+      form_set_error('title', 'Fasta query can not be empty');
+  }
+  if(validate_query_sequence($form_state['values']['database_option'], $form_state['values']['query'])){
+       form_set_error('title', 'Enter Valid Fasta');
+  }
 }
 
 
@@ -166,8 +175,8 @@ $data = array();
 
 if($database_type == 'nucleotide')
 {  
-	if($query_Type == 'nucleotide'){
-	$data = array('query_type' => $query_Type,
+  if($query_Type == 'nucleotide'){
+  $data = array('query_type' => $query_Type,
               'db_type' => $database_type,
               'Select_Database' => $db,
               'Max_target_sequences' => $maxTarget,
@@ -177,57 +186,61 @@ if($database_type == 'nucleotide')
               'Gap_Costs' => $form_state['values']['Gap_Costs'],
               'seqQuery' => $query,
                );
-	
-	}
-	if($query_Type == 'protein'){
-	 $data = array('query_type' => $query_Type,
+  
+  }
+  if($query_Type == 'protein'){
+   $data = array('query_type' => $query_Type,
               'db_type' => $database_type,
               'Select_Database' => $db,
               'Max_target_sequences' => $maxTarget,
               "Word_size" => 3,
               'output_format' =>$output_format,
               'Gap_costs' => $form_state['values']['Gap_Costs'],
-               "Matrix_options" => $Matrix_options,	
+               "Matrix_options" => $Matrix_options, 
               'seqQuery' => $query,
                );
-	
-	}
+  
+  }
       
 } 
 if($database_type == 'protein')
 {
-	if($query_Type == 'nucleotide'){
-	$data = array('query_type' => $query_Type,
+  if($query_Type == 'nucleotide'){
+  $data = array('query_type' => $query_Type,
               'db_type' => $database_type,
               'Select_Database' => $db,
               'Max_target_sequences' => $maxTarget,
               "Word_size" => $Word_size,
               'seqQuery' => $query,
               'output_format' =>$output_format,
-              "Matrix_options" => $Matrix_options,	);
-	
-	}
-	if($query_Type == 'protein'){
-	$data = array('query_type' => $query_Type,
+              "Matrix_options" => $Matrix_options,  );
+  
+  }
+  if($query_Type == 'protein'){
+  $data = array('query_type' => $query_Type,
               'db_type' => $database_type,
               'Select_Database' => $db,
               'Max_target_sequences' => $maxTarget,
               "Word_size" => $Word_size,
               'seqQuery' => $query,
               'output_format' =>$output_format,
-              "Matrix_options" => $Matrix_options,	
-              "Gap_costs" => 'Existence: 5 Extension: 2',	);
-	
-	}
-															
+              "Matrix_options" => $Matrix_options,  
+              "Gap_costs" => 'Existence: 5 Extension: 2', );
+  
+  }
+                              
 }
 
 //drupal_set_message('<pre>' . print_r($data, TRUE) . '</pre>');
 
-
 $result = makeRequest($resource_path,$endpoint,$http_method,$data);
 
+if($result == null){
+  drupal_set_message('Please add valid endoint in seq2Tree Configuration  ');
+}else{
 $result = drupal_json_decode($result);
+
+
 
 //drupal_set_message('<pre>' . print_r($result, TRUE) . '</pre>');
 
@@ -242,18 +255,18 @@ $result = makeRequest($resource_path,$endpoint,$http_method,$data);
 $result = drupal_json_decode($result);
 $status = $result[0];
 
-
 while(true){
-	if(strcasecmp($status, 'Completed') == 0 ){
-		break;
-	}else{
-		$result = makeRequest($resource_path,$endpoint,$http_method,$data);
-		$result = drupal_json_decode($result);
-		$status = $result[0];
-	}
+  if(strcasecmp($status, 'Completed') == 0 ){
+    break;
+  }else{
+    $result = makeRequest($resource_path,$endpoint,$http_method,$data);
+    $result = drupal_json_decode($result);
+    $status = $result[0];
+  }
 }  
-//drupal_set_message($status);
-drupal_goto("seq2Tree/report");   
+drupal_goto("seq2Tree/report"); 
+ }
+ 
 }
 
 
@@ -264,14 +277,14 @@ function ajax_seq2Tree_perprogram_example_sequence_callback($form, $form_state) 
   
   // Choose the example sequence based on the sequence type of the query.
   if ($form_state['values']['example_sequence'] == 1) {
-  			if ($sequence_type == 'nucleotide') {
-    				$example_sequence = variable_get('WebserviceDemo_nucleotide_example_sequence');
-  				}
-  			else{
-    				$example_sequence = variable_get('WebserviceDemo_protein_example_sequence');
-  				}
-  		$form['genefamily']['query']['#value'] = $example_sequence;
-  	}
+        if ($sequence_type == 'nucleotide') {
+            $example_sequence = variable_get('WebserviceDemo_nucleotide_example_sequence');
+          }
+        else{
+            $example_sequence = variable_get('WebserviceDemo_protein_example_sequence');
+          }
+      $form['genefamily']['query']['#value'] = $example_sequence;
+    }
   else {
     $form['genefamily']['query']['#value'] = '';
   }
