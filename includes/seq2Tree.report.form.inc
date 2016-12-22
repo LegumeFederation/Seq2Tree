@@ -1,7 +1,11 @@
 <?php
-/** Created and developed By Prateek Gupta
-**
-**/
+/**
+ * Implements hook_form().
+ * Hooks provided by Drupal for the definition hook_form.
+ *
+ * Author: Prateek Gupta
+ * Created: 2016
+ */
 
 
 $path = drupal_get_path('module', 'seq2Tree');
@@ -39,10 +43,15 @@ return $form;
 
 }
 
+/**
+** This method will fetch the output from BLAST service
+*/
+
 function seq2Tree_getResultoutput(){
 
+// Set variable to fetch result
 $allow = 'true';
-$endpoint = 'http://localhost/restapi';
+$endpoint = variable_get('WebserviceDemo_endpoint');
 $job_id = variable_get('webservice_id');
 $http_method = 'GET';
 $resource_path = '';
@@ -62,8 +71,8 @@ $response = makeRequest($resource_path,$endpoint,$http_method,$data);
 $path = variable_get('blast_output_path');
 $destination = $path."/".$job_id.".".variable_get('WebserviceDemo_output_format');  
 
-
-//drupal_set_message($destination);
+drupal_set_message($response);
+drupal_set_message($destination);
 
 /* Copy the result into File */
 $handle = fopen($destination, 'w');

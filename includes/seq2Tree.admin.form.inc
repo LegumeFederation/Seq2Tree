@@ -1,7 +1,13 @@
 <?php
-/** Created and developed By Prateek Gupta
-**
-**/
+
+
+/**
+ * Implements hook_form().
+ * Hooks provided by Drupal for the definition of new form.
+ *
+ * Author: Prateek Gupta
+ * Created: 2016
+ */
 
 $path = drupal_get_path('module', 'seq2Tree');
 require_once("$path/includes/seq2Tree.utilityfunction.inc");
@@ -172,9 +178,10 @@ KRSLEEGLKTTGEGLDWGVLFGFGPGLTIETVVLRSVAI';
   
   }
   
-  /**
+/**
  * Validate the Admin/Settings form.
  */
+ 
 function seq2Tree_admin_form_validate($form, &$form_state) {
 
 $path = $form_state['values']['path'];
@@ -188,7 +195,9 @@ if($test != 777){
 }
 
 
-
+/**
+ * Implements hook_form_submit().
+ **/
 
 function seq2Tree_admin_form_submit($form, $form_state) {
   variable_set('WebserviceDemo_database_type',$form_state['values']['database_type']);

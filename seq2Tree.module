@@ -1,8 +1,12 @@
 <?php
 
-/** Created and developed By Prateek Gupta
-**
-**/
+/**
+ * Implements hook_menu().
+ * Hooks provided by Drupal for the definition of new menu.
+ *
+ * Author: Prateek Gupta
+ * Created: 2016
+ */
 
 function seq2Tree_menu() {
   $items = array();

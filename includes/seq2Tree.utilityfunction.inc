@@ -1,7 +1,9 @@
 <?php
-/** Created and developed By Prateek Gupta
-**
-**/
+/**
+ * Implements of Utilities functionalities to support web services
+ * Author: Prateek Gupta
+ * Created: 2016
+ */
 function _get_database_type($which){
 
 switch($which){
@@ -117,7 +119,13 @@ function _get_gap_costs($which) {
        );
     }
 }
-    
+
+/**
+** This method will validate the sequence query of BLAST input
+** @ $type : database option
+** @ $sequence : query sequence
+*/
+
 function validate_query_sequence($type, $sequence) {
 
   if ($type == 'nucleotide') {
