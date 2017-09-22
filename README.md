@@ -1,4 +1,7 @@
 # Seq2Tree
+
+** This module has been disabled on Stage/Prod as of 9/22/2017 
+
 ** To use this module, You need to enable REST API's of BLAST **
 
 A Tripal module for placing sequence on a phylogenetic tree.
